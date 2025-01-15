@@ -2,8 +2,7 @@ package com.bookingsystem.service;
 
 import java.sql.Date;
 import java.util.List;
-
-import javax.validation.Valid;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +11,15 @@ import org.springframework.validation.annotation.Validated;
 import com.bookingsystem.model.FlightEntity;
 import com.bookingsystem.repository.FlightRepository;
 
+import jakarta.validation.Valid;
+
 @Service
 @Validated
 public class FlightService {
 	
 	@Autowired
 	private FlightRepository flightRepository;
+	
 	
 	 public FlightEntity saveFlight(@Valid FlightEntity flightEntity) {
 	        return flightRepository.save(flightEntity);

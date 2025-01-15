@@ -79,8 +79,8 @@ public class BookingService {
 		    response.put("departureTime", flight.getDepartureTime());
 		    response.put("arrivalDate", flight.getArrivalDate());
 		    response.put("arrivalTime", flight.getArrivalTime());
-		    response.put("Source Airport", flight.getSourceAirport().getName());
-		    response.put("Destination Airport", flight.getDestinationAirport().getName());
+//		    response.put("Source Airport", flight.getSourceAirport().getName());
+//		    response.put("Destination Airport", flight.getDestinationAirport().getName());
 		    response.put("seatNumber", seatNumber);
 		    response.put("seatClass", seatClass.name());
 		    response.put("price", price); 

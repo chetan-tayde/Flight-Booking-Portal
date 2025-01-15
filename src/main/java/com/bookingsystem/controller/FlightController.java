@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.bookingsystem.model.FlightEntity;
 import com.bookingsystem.service.FlightService;
 
@@ -30,12 +31,11 @@ public class FlightController {
 	@Autowired
 	private FlightService flightService;
 	
-	    @PostMapping
+	 @PostMapping
 	    public ResponseEntity<FlightEntity> createFlight(@Valid @RequestBody FlightEntity flightEntity) {
 	        FlightEntity savedFlight = flightService.saveFlight(flightEntity);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(savedFlight);
 	    }
-	    
 	    
 	    @GetMapping("/search")
 	    public List<Map<String, Object>> searchFlights(@RequestParam Date departureDate, 
@@ -56,8 +56,8 @@ public class FlightController {
 	            flightData.put("economyClassAvailableSeats", flight.getEconomyAvailableSeats());
 	            flightData.put("bussinessClassPrice",flight.getBussinessClassPrice());
 	            flightData.put("economyClassPrice", flight.getEconomyClassPrice());
-	            flightData.put("Airport Source", flight.getSourceAirport().getName());
-	            flightData.put("Airport Destination" , flight.getDestinationAirport().getName());
+//	            flightData.put("Airport Source", flight.getSourceAirport().getName());
+//	            flightData.put("Airport Destination" , flight.getDestinationAirport().getName());
 	            return flightData;
 	        }).collect(Collectors.toList());
 	        return response;
