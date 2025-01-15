@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class FlightEntity {
@@ -17,28 +19,28 @@ public class FlightEntity {
 	@Id
 	private String flightId;
 
-	@NotNull(message = "Source is mandatory")
+	@NotBlank(message = "Source cannot be empty")
 	private String source;
 
-	@NotNull(message = "Destination is mandatory")
+	@NotBlank(message = "Destination cannot be empty")
 	private String destination;
 
-	@NotNull(message = "Seating capacity is mandatory")
+	@Min(value = 1, message = "Seat count must be greater than or equal to 1")
 	private int seatingCapacity;
 
-	@NotNull(message = "Departure date is mandatory")
+	@NotNull(message = "Departure date cannot be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date depatureDate;
 
-	@NotNull(message = "Departure time is mandatory")
+	@NotNull(message = "Departure time cannot be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
 	private LocalTime departureTime;
 
-	@NotNull(message = "Arrival date is mandatory")
+	@NotNull(message = "Arrival date cannot be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date arrivalDate;
 
-	@NotNull(message = "Arrival time is mandatory")
+	@NotNull(message = "Arrival time cannot be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
 	private LocalTime arrivalTime;
 
@@ -50,23 +52,27 @@ public class FlightEntity {
 	@JsonIgnore
 	private int economyAvailableSeats;
 
-	@NotNull(message = "Price is mandatory")
+	@NotNull(message = "Price cannot be empty")
 	private double bussinessClassPrice;
 
-	@NotNull(message = "Price is mandatory")
+	@NotNull(message = "Price cannot be empty")
 	private double economyClassPrice;
 	
-	@NotNull(message = "Airport source name is mandatory")
+	@NotBlank(message = "Airport source name cannot be empty")
 	private String airportSourceName;
 	
-	@NotNull(message = "Airport destination name is mandatory")
+	@NotBlank(message = "Airport destination name cannot be empty")
 	private String aiportDestinationName;
 	
-	@NotNull(message = "Airport source city name is mandatory")
+	@NotBlank(message = "Airport source city name cannot be empty")
 	private String aiportSourceCityName;
 	
-	@NotNull(message = "Airport destination city name is mandatory")
+	@NotBlank(message = "Airport destination city name cannot be empty")
 	private String airportDestinationCityName;
+	
+	@NotBlank(message = "Airline name cannot be empty")
+	private String airLineName;
+	
 
 	@PrePersist
 	public void generateFlightId() {
@@ -79,10 +85,10 @@ public class FlightEntity {
 			String flightIdNumber = String.format("%03d", (int) (Math.random() * 1000));
 			this.flightId = flightIdBase + flightIdNumber;
 		}
-
-		// Initialize class-specific seats
+		     
 		this.businessAvailableSeats = seatingCapacity / 2;
 		this.economyAvailableSeats = seatingCapacity - businessAvailableSeats;
+	   
 	}
 
 
@@ -155,17 +161,21 @@ public class FlightEntity {
 		return businessAvailableSeats;
 	}
 
+
 	public void setBusinessAvailableSeats(int businessAvailableSeats) {
 		this.businessAvailableSeats = businessAvailableSeats;
 	}
+
 
 	public int getEconomyAvailableSeats() {
 		return economyAvailableSeats;
 	}
 
+
 	public void setEconomyAvailableSeats(int economyAvailableSeats) {
 		this.economyAvailableSeats = economyAvailableSeats;
 	}
+
 
 	public double getBussinessClassPrice() {
 		return bussinessClassPrice;
@@ -222,7 +232,15 @@ public class FlightEntity {
 	public void setAirportDestinationCityName(String airportDestinationCityName) {
 		this.airportDestinationCityName = airportDestinationCityName;
 	}
-	
-	
+
+
+	public String getAirLineName() {
+		return airLineName;
+	}
+
+
+	public void setAirLineName(String airLineName) {
+		this.airLineName = airLineName;
+	}
 
 }
