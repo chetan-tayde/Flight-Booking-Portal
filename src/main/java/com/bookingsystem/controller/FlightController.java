@@ -45,18 +45,22 @@ public class FlightController {
 	    	List<FlightEntity> flights = flightService.searchFlights(departureDate, source, destination);
 	        List<Map<String, Object>> response = flights.stream().map(flight -> {
 	            Map<String, Object> flightData = new HashMap<>();
+	            flightData.put("Flight Id" , flight.getFlightId());
 	            flightData.put("source", flight.getSource());
 	            flightData.put("destination", flight.getDestination());
 	            flightData.put("depatureDate", flight.getDepatureDate());
 	            flightData.put("departureTime", flight.getDepartureTime());
 	            flightData.put("arrivalDate", flight.getArrivalDate());
 	            flightData.put("arrivalTime", flight.getArrivalTime());
-	            flightData.put("availableSeats", flight.getAvailableSeats());
+	            flightData.put("businessClassAvailableSeats", flight.getBusinessAvailableSeats());
+	            flightData.put("economyClassAvailableSeats", flight.getEconomyAvailableSeats());
+	            flightData.put("bussinessClassPrice",flight.getBussinessClassPrice());
+	            flightData.put("economyClassPrice", flight.getEconomyClassPrice());
+	            flightData.put("Airport Source", flight.getSourceAirport().getName());
+	            flightData.put("Airport Destination" , flight.getDestinationAirport().getName());
 	            return flightData;
 	        }).collect(Collectors.toList());
-
 	        return response;
 	    }
 	    
-	    //http://localhost:8080/api/flights/search?departureDate=2025-01-09&source=Mumbai&destination=Pune
 }

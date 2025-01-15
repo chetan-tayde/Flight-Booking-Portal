@@ -4,12 +4,14 @@ import java.sql.Date;
 import java.time.LocalTime;
 
 import com.bookingsystem.helper.Constants;
-import com.bookingsystem.helper.SeatClass;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
 
@@ -55,6 +57,22 @@ public class FlightEntity {
 	@JsonIgnore
 	private int economyAvailableSeats;
 
+	@NotNull(message = "Price is mandatory")
+	private double bussinessClassPrice;
+
+	@NotNull(message = "Price is mandatory")
+	private double economyClassPrice;
+	
+	@NotNull
+	@ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "source_airport_id")
+	private AirportEntity sourceAirport;
+	
+    @NotNull
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "destination_airport_id")
+	private AirportEntity destinationAirport;
+
 
 	@PrePersist
 	public void generateFlightId() {
@@ -73,120 +91,156 @@ public class FlightEntity {
 		this.businessAvailableSeats = seatingCapacity / 2;
 		this.economyAvailableSeats = seatingCapacity - businessAvailableSeats;
 	}
-	
-	 
-	 public int assignNextAvailableSeat(SeatClass seatClass) {
-	        if (seatClass == SeatClass.BUSINESS && businessAvailableSeats > 0) {
-	            return seatingCapacity / 2 - businessAvailableSeats + 1;
-	        } else if (seatClass == SeatClass.ECONOMY && economyAvailableSeats > 0) {
-	            return seatingCapacity - economyAvailableSeats + 1;
-	        }
-	        throw new RuntimeException("No seats available in " + seatClass + " class.");
-	    }
-	 
-	 public void bookSeat(SeatClass seatClass) {
-	        if (seatClass == SeatClass.BUSINESS) {
-	            if (businessAvailableSeats > 0) {
-	                businessAvailableSeats--;
-	            } else {
-	                throw new RuntimeException("No available seats in BUSINESS class.");
-	            }
-	        } else if (seatClass == SeatClass.ECONOMY) {
-	            if (economyAvailableSeats > 0) {
-	                economyAvailableSeats--;
-	            } else {
-	                throw new RuntimeException("No available seats in ECONOMY class.");
-	            }
-	        }
-	    }
+
 
 	public String getFlightId() {
 		return flightId;
 	}
 
+
 	public void setFlightId(String flightId) {
 		this.flightId = flightId;
 	}
+
 
 	public String getSource() {
 		return source;
 	}
 
+
 	public void setSource(String source) {
 		this.source = source;
 	}
+
 
 	public String getDestination() {
 		return destination;
 	}
 
+
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
+
 
 	public int getSeatingCapacity() {
 		return seatingCapacity;
 	}
 
+
 	public void setSeatingCapacity(int seatingCapacity) {
 		this.seatingCapacity = seatingCapacity;
 	}
+
 
 	public Date getDepatureDate() {
 		return depatureDate;
 	}
 
+
 	public void setDepatureDate(Date depatureDate) {
 		this.depatureDate = depatureDate;
 	}
+
 
 	public LocalTime getDepartureTime() {
 		return departureTime;
 	}
 
+
 	public void setDepartureTime(LocalTime departureTime) {
 		this.departureTime = departureTime;
 	}
+
 
 	public Date getArrivalDate() {
 		return arrivalDate;
 	}
 
+
 	public void setArrivalDate(Date arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
+
 
 	public LocalTime getArrivalTime() {
 		return arrivalTime;
 	}
 
+
 	public void setArrivalTime(LocalTime arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
+
 
 	public int getAvailableSeats() {
 		return availableSeats;
 	}
 
+
 	public void setAvailableSeats(int availableSeats) {
 		this.availableSeats = availableSeats;
 	}
+
 
 	public int getBusinessAvailableSeats() {
 		return businessAvailableSeats;
 	}
 
+
 	public void setBusinessAvailableSeats(int businessAvailableSeats) {
 		this.businessAvailableSeats = businessAvailableSeats;
 	}
+
 
 	public int getEconomyAvailableSeats() {
 		return economyAvailableSeats;
 	}
 
+
 	public void setEconomyAvailableSeats(int economyAvailableSeats) {
 		this.economyAvailableSeats = economyAvailableSeats;
-	}	
-	
+	}
 
+
+	public double getBussinessClassPrice() {
+		return bussinessClassPrice;
+	}
+
+
+	public void setBussinessClassPrice(double bussinessClassPrice) {
+		this.bussinessClassPrice = bussinessClassPrice;
+	}
+
+
+	public double getEconomyClassPrice() {
+		return economyClassPrice;
+	}
+
+
+	public void setEconomyClassPrice(double economyClassPrice) {
+		this.economyClassPrice = economyClassPrice;
+	}
+
+
+	public AirportEntity getSourceAirport() {
+		return sourceAirport;
+	}
+
+
+	public void setSourceAirport(AirportEntity sourceAirport) {
+		this.sourceAirport = sourceAirport;
+	}
+
+
+	public AirportEntity getDestinationAirport() {
+		return destinationAirport;
+	}
+
+
+	public void setDestinationAirport(AirportEntity destinationAirport) {
+		this.destinationAirport = destinationAirport;
+	}
+
+	
 }
