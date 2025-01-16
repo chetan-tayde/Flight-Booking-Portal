@@ -17,8 +17,7 @@ Follow these steps to set up the project locally:
 
 #### 1. Clone the repository
    
-  `https://github.com/chetan-tayde/Flight-Booking-Portal.git`
-
+  `git clone https://github.com/chetan-tayde/Flight-Booking-Portal.git`
 
 #### 2. Navigate to the project directory:
 
