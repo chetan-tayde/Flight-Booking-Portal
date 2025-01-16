@@ -1,11 +1,11 @@
 package com.bookingsystem.model;
 
-import javax.validation.constraints.NotNull;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+
 
 @Entity
 public class User {
@@ -14,19 +14,19 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private int userId;
 	
-	@NotNull(message = "First Name is mandatory")
+	@NotBlank(message = "Name cannot be empty")
 	private String firstName;
 	
-	@NotNull(message = "Last name is mandatory")
+	@NotBlank(message = "Name cannot be empty")
 	private String lastName;
 	
-	@NotNull(message = "Phone Number is mandatory")
+	@NotBlank(message = "Phone number cannot be empty")
 	private String phoneNumber;
 	
-	@NotNull(message = "Email ID is mandatory")
+	@NotBlank(message = "Email id cannot be empty")
 	private String emailId;
 	
-	@NotNull(message = "Country is mandatory")
+	@NotBlank(message = "Country cannot be empty")
 	private String country;
 
 	public int getUserId() {

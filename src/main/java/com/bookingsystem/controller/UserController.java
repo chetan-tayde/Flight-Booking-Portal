@@ -1,5 +1,4 @@
 package com.bookingsystem.controller;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,17 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bookingsystem.model.User;
 import com.bookingsystem.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-	
+
 	@Autowired
 	private UserService userService;
-	
-	  @PostMapping
-	    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-	        User savedUser = userService.saveUser(user);
-	        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
-	    }
+
+	@PostMapping
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+		User savedUser = userService.saveUser(user);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+	}
 
 }

@@ -4,14 +4,14 @@ import java.sql.Date;
 import java.time.LocalTime;
 
 import com.bookingsystem.helper.Constants;
-import com.bookingsystem.helper.SeatClass;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class FlightEntity {
@@ -19,33 +19,30 @@ public class FlightEntity {
 	@Id
 	private String flightId;
 
-	@NotNull(message = "Source is mandatory")
+	@NotBlank(message = "Source cannot be empty")
 	private String source;
 
-	@NotNull(message = "Destination is mandatory")
+	@NotBlank(message = "Destination cannot be empty")
 	private String destination;
 
-	@NotNull(message = "Seating capacity is mandatory")
+	@Min(value = 1, message = "Seat count must be greater than or equal to 1")
 	private int seatingCapacity;
 
-	@NotNull(message = "Departure date is mandatory")
+	@NotNull(message = "Departure date cannot be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date depatureDate;
 
-	@NotNull(message = "Departure time is mandatory")
+	@NotNull(message = "Departure time cannot be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
 	private LocalTime departureTime;
 
-	@NotNull(message = "Arrival date is mandatory")
+	@NotNull(message = "Arrival date cannot be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date arrivalDate;
 
-	@NotNull(message = "Arrival time is mandatory")
+	@NotNull(message = "Arrival time cannot be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
 	private LocalTime arrivalTime;
-
-	@NotNull(message = "Available seats are mandatory")
-	private int availableSeats;
 
 	@NotNull
 	@JsonIgnore
@@ -55,6 +52,27 @@ public class FlightEntity {
 	@JsonIgnore
 	private int economyAvailableSeats;
 
+	@NotNull(message = "Price cannot be empty")
+	private double bussinessClassPrice;
+
+	@NotNull(message = "Price cannot be empty")
+	private double economyClassPrice;
+	
+	@NotBlank(message = "Airport source name cannot be empty")
+	private String airportSourceName;
+	
+	@NotBlank(message = "Airport destination name cannot be empty")
+	private String aiportDestinationName;
+	
+	@NotBlank(message = "Airport source city name cannot be empty")
+	private String aiportSourceCityName;
+	
+	@NotBlank(message = "Airport destination city name cannot be empty")
+	private String airportDestinationCityName;
+	
+	@NotBlank(message = "Airline name cannot be empty")
+	private String airLineName;
+	
 
 	@PrePersist
 	public void generateFlightId() {
@@ -67,38 +85,12 @@ public class FlightEntity {
 			String flightIdNumber = String.format("%03d", (int) (Math.random() * 1000));
 			this.flightId = flightIdBase + flightIdNumber;
 		}
-		this.availableSeats = this.seatingCapacity;
-
-		// Initialize class-specific seats
+		     
 		this.businessAvailableSeats = seatingCapacity / 2;
 		this.economyAvailableSeats = seatingCapacity - businessAvailableSeats;
+	   
 	}
-	
-	 
-	 public int assignNextAvailableSeat(SeatClass seatClass) {
-	        if (seatClass == SeatClass.BUSINESS && businessAvailableSeats > 0) {
-	            return seatingCapacity / 2 - businessAvailableSeats + 1;
-	        } else if (seatClass == SeatClass.ECONOMY && economyAvailableSeats > 0) {
-	            return seatingCapacity - economyAvailableSeats + 1;
-	        }
-	        throw new RuntimeException("No seats available in " + seatClass + " class.");
-	    }
-	 
-	 public void bookSeat(SeatClass seatClass) {
-	        if (seatClass == SeatClass.BUSINESS) {
-	            if (businessAvailableSeats > 0) {
-	                businessAvailableSeats--;
-	            } else {
-	                throw new RuntimeException("No available seats in BUSINESS class.");
-	            }
-	        } else if (seatClass == SeatClass.ECONOMY) {
-	            if (economyAvailableSeats > 0) {
-	                economyAvailableSeats--;
-	            } else {
-	                throw new RuntimeException("No available seats in ECONOMY class.");
-	            }
-	        }
-	    }
+
 
 	public String getFlightId() {
 		return flightId;
@@ -111,6 +103,7 @@ public class FlightEntity {
 	public String getSource() {
 		return source;
 	}
+
 
 	public void setSource(String source) {
 		this.source = source;
@@ -164,29 +157,90 @@ public class FlightEntity {
 		this.arrivalTime = arrivalTime;
 	}
 
-	public int getAvailableSeats() {
-		return availableSeats;
-	}
-
-	public void setAvailableSeats(int availableSeats) {
-		this.availableSeats = availableSeats;
-	}
-
 	public int getBusinessAvailableSeats() {
 		return businessAvailableSeats;
 	}
+
 
 	public void setBusinessAvailableSeats(int businessAvailableSeats) {
 		this.businessAvailableSeats = businessAvailableSeats;
 	}
 
+
 	public int getEconomyAvailableSeats() {
 		return economyAvailableSeats;
 	}
 
+
 	public void setEconomyAvailableSeats(int economyAvailableSeats) {
 		this.economyAvailableSeats = economyAvailableSeats;
-	}	
-	
+	}
+
+
+	public double getBussinessClassPrice() {
+		return bussinessClassPrice;
+	}
+
+	public void setBussinessClassPrice(double bussinessClassPrice) {
+		this.bussinessClassPrice = bussinessClassPrice;
+	}
+
+	public double getEconomyClassPrice() {
+		return economyClassPrice;
+	}
+
+	public void setEconomyClassPrice(double economyClassPrice) {
+		this.economyClassPrice = economyClassPrice;
+	}
+
+
+	public String getAirportSourceName() {
+		return airportSourceName;
+	}
+
+
+	public void setAirportSourceName(String airportSourceName) {
+		this.airportSourceName = airportSourceName;
+	}
+
+
+	public String getAiportDestinationName() {
+		return aiportDestinationName;
+	}
+
+
+	public void setAiportDestinationName(String aiportDestinationName) {
+		this.aiportDestinationName = aiportDestinationName;
+	}
+
+
+	public String getAiportSourceCityName() {
+		return aiportSourceCityName;
+	}
+
+
+	public void setAiportSourceCityName(String aiportSourceCityName) {
+		this.aiportSourceCityName = aiportSourceCityName;
+	}
+
+
+	public String getAirportDestinationCityName() {
+		return airportDestinationCityName;
+	}
+
+
+	public void setAirportDestinationCityName(String airportDestinationCityName) {
+		this.airportDestinationCityName = airportDestinationCityName;
+	}
+
+
+	public String getAirLineName() {
+		return airLineName;
+	}
+
+
+	public void setAirLineName(String airLineName) {
+		this.airLineName = airLineName;
+	}
 
 }
