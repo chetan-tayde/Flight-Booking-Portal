@@ -1,27 +1,41 @@
-package com.bookingsystem.service;
+package com.bookingsystem.service.impl;
 
-import com.bookingsystem.helper.SeatClass;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.bookingsystem.exceptions.ServiceExceptions;
+import com.bookingsystem.helper.Constants;
+import com.bookingsystem.helper.FlightManager;
+import com.bookingsystem.helper.SeatClass;
+import com.bookingsystem.model.BookingEntity;
+import com.bookingsystem.model.FlightEntity;
+import com.bookingsystem.model.User;
+import com.bookingsystem.repository.BookingRepository;
+import com.bookingsystem.repository.FlightRepository;
+import com.bookingsystem.repository.UserRepository;
+import com.bookingsystem.service.BookingService;
 
-public interface BookingService {
+import jakarta.transaction.Transactional;
 
-	Map<String, Object> bookSeat(String flightId, int userId, SeatClass seatClass);
+@Service
+public class BookingServiceImpl implements BookingService{
 	
-	Map<String, Object> getBookingDetailsByBookingId(String bookingId);
-	
-	/*@Autowired
-	private BookingRepository bookingRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
-	@Autowired
-	private FlightRepository flightRepository;
+    @Autowired
+    private FlightRepository flightRepository;
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	FlightManager flightManager = new FlightManager();
+    private FlightManager flightManager = new FlightManager();
 
+	@Override
 	@Transactional
 	public Map<String, Object> bookSeat(String flightId, int userId, SeatClass seatClass) {
 		FlightEntity flight = flightRepository.findById(flightId).orElseThrow(
@@ -38,9 +52,9 @@ public interface BookingService {
 			return handleBooking(flight, user, seatClass, price);
 		} else {
 			throw new ServiceExceptions.SeatNotAvailableException("Seat not available");
-		}
+		}	
 	}
-
+	
 	private Map<String, Object> handleBooking(FlightEntity flight, User user, SeatClass seatClass, double price) {
 		int seatNumber = flightManager.assignNextAvailableSeat(flight, seatClass);
 		flightManager.bookSeat(flight, seatClass);
@@ -76,6 +90,7 @@ public interface BookingService {
 		return response;
 	}
 
+	@Override
 	public Map<String, Object> getBookingDetailsByBookingId(String bookingId) {
 		BookingEntity booking = bookingRepository.findById(bookingId).orElseThrow(
 				() -> new ServiceExceptions.BookingFailedException("Booking not found for id: " + bookingId));
@@ -96,5 +111,5 @@ public interface BookingService {
 		bookingDetails.put("Price", booking.getPrice());
 		bookingDetails.put("Seat Class", booking.getSeatClass());
 		return bookingDetails;
-	}*/
+	}
 }
