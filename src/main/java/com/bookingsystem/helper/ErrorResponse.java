@@ -10,7 +10,6 @@ public class ErrorResponse {
 	        this.errors = errors;
 	    }
 
-	    // Getter and Setter
 	    public Map<String, String> getErrors() {
 	        return errors;
 	    }

@@ -11,7 +11,7 @@ import com.bookingsystem.service.UserService;
 import jakarta.validation.Valid;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends UserService {
 
 	@Autowired
 	private UserRepository userRepository;

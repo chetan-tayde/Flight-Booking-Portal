@@ -4,8 +4,10 @@ import com.bookingsystem.model.User;
 
 import jakarta.validation.Valid;
 
-public interface UserService {
+public abstract class UserService {
 
-	public User saveUser(@Valid User user);
+	public User saveUser(@Valid User user) {
+		return user;
+	}
 	
 }

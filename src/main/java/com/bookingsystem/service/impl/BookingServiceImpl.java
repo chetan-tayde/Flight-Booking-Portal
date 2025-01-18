@@ -21,6 +21,7 @@ import com.bookingsystem.service.BookingService;
 
 import jakarta.transaction.Transactional;
 
+//Implementation of interface oops concept
 @Service
 public class BookingServiceImpl implements BookingService{
 	
