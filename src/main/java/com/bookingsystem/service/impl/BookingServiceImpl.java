@@ -1,6 +1,7 @@
 package com.bookingsystem.service.impl;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -104,7 +105,7 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public Map<String, Object> getBookingDetailsByBookingId(String bookingId) {
+	public Map<String, Object> getBooking(String bookingId) {
 		logger.info("Fetching booking details for Booking ID: {}", bookingId);
 		BookingEntity booking = bookingRepository.findById(bookingId).orElseThrow(() -> {
 			logger.error("Booking not found for ID: {}", bookingId);
@@ -128,5 +129,10 @@ public class BookingServiceImpl implements BookingService {
 		bookingDetails.put("Price", booking.getPrice());
 		bookingDetails.put("Seat Class", booking.getSeatClass());
 		return bookingDetails;
+	}
+
+	@Override
+	public List<BookingEntity> getBooking() {
+		 return bookingRepository.findAll();
 	}
 }

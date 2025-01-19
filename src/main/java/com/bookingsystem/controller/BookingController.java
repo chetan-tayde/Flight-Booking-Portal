@@ -1,5 +1,6 @@
 package com.bookingsystem.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bookingsystem.helper.SeatClass;
+import com.bookingsystem.model.BookingEntity;
 import com.bookingsystem.service.BookingService;
 
 @RestController
@@ -29,8 +31,17 @@ public class BookingController {
 
 	@GetMapping("/{bookingId}")
 	public ResponseEntity<Map<String, Object>> getBookingDetails(@PathVariable String bookingId) {
-		Map<String, Object> bookingDetails = bookingService.getBookingDetailsByBookingId(bookingId);
+		Map<String, Object> bookingDetails = bookingService.getBooking(bookingId);
 		return ResponseEntity.ok(bookingDetails);
 	}
+	
+	@GetMapping
+    public ResponseEntity<List<BookingEntity>> getAllBookings() {
+        List<BookingEntity> bookings = bookingService.getBooking();
+        if (bookings.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(bookings);
+    }
 
 }

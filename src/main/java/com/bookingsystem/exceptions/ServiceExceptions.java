@@ -9,6 +9,12 @@ public class ServiceExceptions {
 	    }
 	}
 	
+	public static class FlightValidationException extends RuntimeException{
+		public FlightValidationException(String message) {
+		super(message);
+		}
+	}
+	
 	public static class UserNotFoundException extends RuntimeException {
 	    public UserNotFoundException(String message) {
 	        super(message);

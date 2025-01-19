@@ -20,7 +20,8 @@ public class GlobalExceptionHandler {
 		ServiceExceptions.UserNotFoundException.class,
 		ServiceExceptions.FlightSaveFailedException.class,
 		ServiceExceptions.FlightSearchInvalidParametersException.class,
-		ServiceExceptions.UserSaveFailedException.class
+		ServiceExceptions.UserSaveFailedException.class,
+		ServiceExceptions.FlightValidationException.class
 	})
 	
 	 public ResponseEntity<Object> handleCustomExceptions(RuntimeException ex) {
@@ -38,6 +39,4 @@ public class GlobalExceptionHandler {
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(errorResponse);
 	}
-	
-
 }
