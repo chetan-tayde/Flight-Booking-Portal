@@ -48,8 +48,18 @@ spring:
 
 
 ## Usage
-
-### Add New User Api
+## Oops concept implementation
+To achieve oops concept into project i have made some change as below.
+### Encapsulation
+Encapsulation is achieved by keeping the fields of all classes private and exposing them via public ```getters and setters```.This ensures controlled access to field.
+### Polymorphism
+Polymorphism is implemented in the ```BookingServiceImpl & FlightServiceImpl``` class using method overloading.
+The same method name is used with different parameters to achieve different functionalities based on the input.
+### Abstraction
+The ```FlightServiceImpl,BookingServiceImpl & UserServiceImpl``` class implements the ```FlightService,BookingService & UserService``` interface resepectively, using OOP principle of abstraction.This ensures service methods improves maintainability.
+### Loggers
+Implemeneted Loggers for better traceability and debugging.
+## Add New User Api
 
 - Post Request http://localhost:8080/api/users (Add new user)
 - This API allows you to add a new user to the system.
@@ -212,6 +222,89 @@ if flight is not available for given input or user given wrong input it gives me
     "message": "Booking not found for id: BK-868786"
 }
 ```
+
+## Fetch All Booking Details API
+- Get Request:- http://localhost:8080/api/booking (Fetches all booking details in list)
+- Fetches the all booking details from the database.
+- Returns all relevant information, including details such ad source, destination, dates, times, airport source and destination name,user information, and booking-specific data seat number, class, price.
+#### Success Message
+```
+    {
+        "bookingId": "BK-3395276",
+        "user": {
+            "userId": 3,
+            "firstName": "Vishal",
+            "lastName": "Umbarkar",
+            "phoneNumber": "7057476885",
+            "emailId": "vishalumbarkar@gmail.com",
+            "country": "India"
+        },
+        "flight": {
+            "depatureDate": "2025-01-16",
+            "departureTime": "18:30:40",
+            "arrivalDate": "2025-01-16",
+            "arrivalTime": "19:30:40",
+            "flightId": "FLT-BANDEL210",
+            "source": "Banglore",
+            "destination": "Delhi",
+            "seatingCapacity": 280,
+            "bussinessClassPrice": 2353.0,
+            "economyClassPrice": 1931.0,
+            "airportSourceName": "Banglore International Airport",
+            "aiportDestinationName": "Delhi International Airport",
+            "aiportSourceCityName": "Banglore",
+            "airportDestinationCityName": "Delhi",
+            "airLineName": "Delta Air Line"
+        },
+        "seatNumber": 141,
+        "seatClass": "ECONOMY",
+        "price": 1931.0
+    },
+```
+
+## Search Flight Based on Airport Name.
+- Get Request:- http://localhost:8080/api/flights/byAirport?airportSourceName=Pune International Airport&aiportDestinationName=Mumbai International Airport
+- Enables users to filter flights based on airportSourceName source and aiportDestinationName.
+- Only flights matching the criteria will be returned, ensuring precise search results.
+#### Success Message
+```
+[
+    {
+        "Flight Id": "FLT-PUNMUM173",
+        "Source": "Pune",
+        "Destination": "Mumbai",
+        "Depature Date": "2025-01-19",
+        "Departure Time": "18:30:40",
+        "Arrival Date": "2025-01-20",
+        "Arrival Time": "19:30:40",
+        "Business Class Available Seats": 140,
+        "Economy Class Available Seats": 139,
+        "Bussiness Class Price": 1785.0,
+        "Economy Class Price": 1394.0,
+        "Source Airport": "Pune International Airport",
+        "Destination Airport": "Mumbai International Airport",
+        "Air Line": "Delta Air Line"
+    },
+    {
+        "Flight Id": "FLT-PUNMUM272",
+        "Source": "Pune",
+        "Destination": "Mumbai",
+        "Depature Date": "2025-01-20",
+        "Departure Time": "18:30:40",
+        "Arrival Date": "2025-01-20",
+        "Arrival Time": "19:30:40",
+        "Business Class Available Seats": 137,
+        "Economy Class Available Seats": 138,
+        "Bussiness Class Price": 1785.0,
+        "Economy Class Price": 1394.0,
+        "Source Airport": "Pune International Airport",
+        "Destination Airport": "Mumbai International Airport",
+        "Air Line": "Delta Air Line"
+    }
+]
+```
+
+
 ## Summary 
 This project has been meticulously designed and developed with a focus on modularity, robustness, and user-centric functionality.
 ### Controller
@@ -227,8 +320,3 @@ This project has been meticulously designed and developed with a focus on modula
 - Added robust validations on entity fields using annotations like @NotNull, @NotEmpty, and @size to maintain data integrity.
 ### Utility Methods
 - Created helper methods for tasks like generating unique IDs, Constant, enums, seat assignment, and date validation.
-
-
-
-
-  
