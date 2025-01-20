@@ -70,7 +70,11 @@ public class BookingServiceImpl implements BookingService {
 				user.getUserId(), seatClass);
 		int seatNumber = flightManager.assignNextAvailableSeat(flight, seatClass);
 		flightManager.bookSeat(flight, seatClass);
+		logger.info("Before saving: Business Seats: {}, Economy Seats: {}", 
+			    flight.getBusinessAvailableSeats(), flight.getEconomyAvailableSeats());
 		flightRepository.save(flight);
+		logger.info("After saving: Business Seats: {}, Economy Seats: {}", 
+			    flight.getBusinessAvailableSeats(), flight.getEconomyAvailableSeats());
 		logger.info("Updated Flight entity saved for Flight ID: {}", flight.getFlightId());
 		BookingEntity booking = new BookingEntity();
 		Random random = new Random();
@@ -83,7 +87,7 @@ public class BookingServiceImpl implements BookingService {
 		booking.setSeatClass(seatClass.name());
 		booking.setPrice(price);
 		bookingRepository.save(booking);
-		logger.info("Booking successful with Booking ID: {}", bookingId);
+		logger.info("Booking successful with Booking ID: {}", booking.getFlight().getBusinessAvailableSeats());
 
 		Map<String, Object> response = new LinkedHashMap<>();
 		response.put("Status", "Booking is successful");

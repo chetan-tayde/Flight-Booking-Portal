@@ -3,19 +3,19 @@ package com.bookingsystem.model;
 import java.sql.Date;
 import java.time.LocalTime;
 
+import com.bookingsystem.exceptions.ServiceExceptions;
 import com.bookingsystem.helper.Constants;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class FlightEntity extends BaseEntity{
+public class FlightEntity{
 
 	@Id
 	private String flightId;
@@ -29,7 +29,7 @@ public class FlightEntity extends BaseEntity{
 	@Min(value = 1, message = "Seat count must be greater than or equal to 1")
 	private int seatingCapacity;
 
-	/*@NotNull(message = "Departure date cannot be empty")
+	@NotNull(message = "Departure date cannot be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date depatureDate;
 
@@ -43,7 +43,7 @@ public class FlightEntity extends BaseEntity{
 
 	@NotNull(message = "Arrival time cannot be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-	private LocalTime arrivalTime;*/
+	private LocalTime arrivalTime;
 
 	@NotNull
 	@JsonIgnore
@@ -76,9 +76,7 @@ public class FlightEntity extends BaseEntity{
 	
 
 	@PrePersist
-	@PreUpdate
 	public void generateFlightId() {
-		validateDatesAndTimes();
 		if (this.flightId == null) {
 			String sourceCode = (source != null && source.length() >= 3) ? source.substring(0, 3).toUpperCase() : "xxx";
 			String destinationCode = (destination != null && destination.length() >= 3)
@@ -87,6 +85,16 @@ public class FlightEntity extends BaseEntity{
 			String flightIdBase = Constants.FLIGHTPREFIX + sourceCode + destinationCode;
 			String flightIdNumber = String.format("%03d", (int) (Math.random() * 1000));
 			this.flightId = flightIdBase + flightIdNumber;
+		}
+		
+		if (arrivalDate.before(depatureDate)) {
+			throw new ServiceExceptions.FlightValidationException("Arrival date cannot be earlier than departure date. "
+					+ "Departure Date: " + depatureDate + ", Arrival Date: " + arrivalDate);
+		}
+		if (arrivalDate.equals(depatureDate) && arrivalTime.isBefore(departureTime)) {
+			throw new ServiceExceptions.FlightValidationException(
+					"On the same date, arrival time cannot be earlier than departure time. " + "Departure Time: "
+							+ departureTime + ", Arrival Time: " + arrivalTime);
 		}
 		     
 		this.businessAvailableSeats = seatingCapacity / 2;
@@ -128,7 +136,7 @@ public class FlightEntity extends BaseEntity{
 		this.seatingCapacity = seatingCapacity;
 	}
 
-/*	public Date getDepatureDate() {
+	public Date getDepatureDate() {
 		return depatureDate;
 	}
 
@@ -158,7 +166,7 @@ public class FlightEntity extends BaseEntity{
 
 	public void setArrivalTime(LocalTime arrivalTime) {
 		this.arrivalTime = arrivalTime;
-	}*/
+	}
 
 	public int getBusinessAvailableSeats() {
 		return businessAvailableSeats;

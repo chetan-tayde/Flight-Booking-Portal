@@ -37,7 +37,6 @@ public class FlightServiceImpl implements FlightService{
 		}
 	}
 
-	//Polymorphism Method Overloading
 	@Override
 	public List<Map<String, Object>> searchFlights(Date departureDate, String source, String destination) {
 		 if (source == null || source.isEmpty() || destination == null || destination.isEmpty()) {
@@ -73,7 +72,6 @@ public class FlightServiceImpl implements FlightService{
 		}).collect(Collectors.toList());
 	}
 
-	//Polymorphism Method Overloading
 	@Override
 	public List<Map<String, Object>> searchFlights(String airportSourceName, String aiportDestinationName) {
 		if(airportSourceName == null || airportSourceName.isEmpty() || aiportDestinationName == null || aiportDestinationName.isEmpty()) {
